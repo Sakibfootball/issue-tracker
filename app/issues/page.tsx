@@ -1,5 +1,6 @@
 "use client"
 import { usePathname } from "next/navigation";
+import { Button } from "@radix-ui/themes";
 import React from "react";
 
 const IssuePage = () => {
@@ -7,7 +8,9 @@ const IssuePage = () => {
   return (
   <div>
     
-    IssuePage
+    <Button>
+      Issue Page
+    </Button>
 
   </div>
   
