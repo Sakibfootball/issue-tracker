@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
 import ErrorMessege from "@/app/components/ErrorMessege";
+import Spinnner from "@/app/components/Spinnner";
 
 type IssueForm = z.infer<typeof createIssueSchema>
 
@@ -17,7 +18,20 @@ function NewIssuePage() {
   const { register, control, handleSubmit, formState: {errors} } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema)
   });
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setSubmitting(true)
+      await axios.post("/api/issues", data);
+      route.push("/issues");
+    } catch (error) {
+      setSubmitting(false)
+      setError("errrrrrrroooooooorrrrrrr")
+      console.log(error)
+    }
+  })
   const [error, setError] = useState("");
+  const [isSubmitting, setSubmitting] = useState(false)
   const route = useRouter();
   return (
     <div className="max-w-xl ">
@@ -26,14 +40,7 @@ function NewIssuePage() {
         </Callout.Root>}
       <form
         className=" space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            await axios.post("/api/issues", data);
-            route.push("/issues");
-          } catch (error) {
-            setError("One of the field is empty");
-          }
-        })}
+        onSubmit={onSubmit}
       >
         <TextField.Root
           placeholder="Title"
@@ -49,7 +56,8 @@ function NewIssuePage() {
         />
         {errors.description && <ErrorMessege>{errors.description.message}</ErrorMessege>}
 
-        <Button>Submit New Issue</Button>
+        <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinnner/>}</Button>
+        
       </form>
     </div>
   );
