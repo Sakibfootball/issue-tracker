@@ -29,7 +29,7 @@ const IssuePage = async() => {
           {issues.map(issue => (
             <Table.Row key={issue.id}>
               <Table.Cell>
-               <Link href={`/issues/${issue.id}`}>
+               <Link href={`/issues/${issue.id}`} className="hover: scale-110 transition-all hover:text-orange-500">
 
                 {issue.title}
                </Link>
