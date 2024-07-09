@@ -5,7 +5,6 @@ import React from "react";
 import Link from "next/link";
 import prisma from "@/prisma/client";
 import IssueStatusBadge from "../components/IssueStatusBadge";
-import dalay from 'delay'
 
 const IssuePage = async() => {
   const issues =  await prisma.issues.findMany();
@@ -29,7 +28,7 @@ const IssuePage = async() => {
           {issues.map(issue => (
             <Table.Row key={issue.id}>
               <Table.Cell>
-               <Link href={`/issues/${issue.id}`} className="hover: scale-110 transition-all hover:text-orange-500">
+               <Link href={`/issues/${issue.id}`} className="hover:scale-110 transition-all hover:text-orange-500">
 
                 {issue.title}
                </Link>
