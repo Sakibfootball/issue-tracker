@@ -11,7 +11,6 @@ import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
 import ErrorMessege from "@/app/components/ErrorMessege";
 import Spinnner from "@/app/components/Spinnner";
-import prisma from "@/prisma/client";
 import { Issues } from "@prisma/client";
 
 interface Props {
@@ -33,6 +32,10 @@ const IssueForm = ({ issue }: Props) => {
     resolver: zodResolver(createIssueSchema),
   });
 
+  const [error, setError] = useState("");
+  const [isSubmitting, setSubmitting] = useState(false);
+  const route = useRouter();
+
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
@@ -42,15 +45,15 @@ const IssueForm = ({ issue }: Props) => {
         await axios.post("/api/issues", data);
       }
       route.push("/issues");
+      route.refresh()
+      
     } catch (error) {
       setSubmitting(false);
       setError("errrrrrrroooooooorrrrrrr");
       console.log(error);
     }
   });
-  const [error, setError] = useState("");
-  const [isSubmitting, setSubmitting] = useState(false);
-  const route = useRouter();
+ 
   return (
     <div className="max-w-xl ">
       {error && (
